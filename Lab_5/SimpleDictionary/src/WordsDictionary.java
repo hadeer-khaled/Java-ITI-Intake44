@@ -25,7 +25,8 @@ public class WordsDictionary {
         }
     }
     // 2)insertWords (words list)
-    public void insertWords(String ...words) {
+    public void insertWords(String userWords) {
+        Set<String> words  = extractStrings(userWords);
         for (String word : words) {
             char key = word.charAt(0);
             if (wordDict.containsKey(key)) {
@@ -66,8 +67,6 @@ public class WordsDictionary {
         return matchedWords;
         }
     }
-
-
     // ----------------------------- Remove --------------------------\\
 
     // 1) removeWprd()
@@ -111,4 +110,20 @@ public class WordsDictionary {
       }
     }
 
+    // ---------------------- Private Helper Functinos ----------------------\\
+    private static Set<String> extractStrings(String wordsList) {
+        String[] wordsArray = wordsList.split("[\\s\\p{Punct}]");
+        Set<String> result = new TreeSet<>();
+
+        for (String word : wordsArray) {
+            if (!word.isEmpty()) {
+                result.add(word.trim().toLowerCase());
+            }
+        }
+        System.out.println(result);
+        return result;
+    }
+
+
 }
+
