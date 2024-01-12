@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 
 public class InMemoryWorldDao implements WorldDao {
@@ -48,26 +49,57 @@ public class InMemoryWorldDao implements WorldDao {
         InMemoryWorldDao worldDao = InMemoryWorldDao.getInstance ();
         Set<String> allContinents = worldDao.getContinents ();
         //System.out.println(allContinents);
+
         Map<String, Country> allCountries = worldDao.getCountries ();
-        //System.out.println(allCountries);
+//        System.out.println(allCountries.values());
+
+        // -------------------------------- 1) The highest populated city of each country --------------------------------
+        Map<String, String> CountriesCitiesMaxPop = allCountries.values().stream().collect(Collectors.toMap(
+                Country::getName,
+                c->{ List<City> cities = c.getCities();
+                    return  cities.stream().max(Comparator.comparing(City::getPopulation)).map(City::getName)
+                            .orElse("There is no Cities");
+                }
+        ));
+        CountriesCitiesMaxPop.forEach((key, val) -> {
+            System.out.println("Country: " + key + "     City: " + val);
+        });
+    // -------------------------------------------------------------------------------------------------------------\\
+
+
+        // -------------------------------- 2) the most populated city of each continent --------------------------------
+        Map<String, String> ContinentCitiesMaxPop = allCountries.values().stream().collect(Collectors.toMap(
+                Country::getContinent,
+                c->{
+                    List<City> cities = c.getCities();
+                    return  cities.stream().max(Comparator.comparing(City::getPopulation)).map(City::getName)
+                            .orElse("There is no Cities");
+                }
+        ));
+        ContinentCitiesMaxPop.forEach((key, val) -> {
+            System.out.println("Continent: " + key + "     City: " + val);
+        });
+
+
         Map<Integer, City> allCities = worldDao.getCities ();
         //System.out.println(allCities);
         //worldDao.writeCountriesToFile (allCountries, "Countries.txt");
         //worldDao.writeCitiesToFile (allCities, "Cities.txt");
-        for (Map.Entry<Integer, City> entry : allCities.entrySet()) {
-            Integer cityId = entry.getKey();
-            City city = entry.getValue();
 
-            // Assuming City has a toString() method
-            System.out.println("City ID: " + cityId + ", City Details: " + city.toString());
-        }
-        for (Map.Entry<String, Country> entry : allCountries.entrySet()) {
-            String countryCode = entry.getKey();
-            Country country = entry.getValue();
-
-            // Assuming Country has a toString() method
-            System.out.println("Country Code: " + countryCode + ", Country Details: " + country.toString());
-        }
+//        for (Map.Entry<Integer, City> entry : allCities.entrySet()) {
+//            Integer cityId = entry.getKey();
+//            City city = entry.getValue();
+//
+//            // Assuming City has a toString() method
+//            System.out.println("City ID: " + cityId + ", City Details: " + city.toString());
+//        }
+//        for (Map.Entry<String, Country> entry : allCountries.entrySet()) {
+//            String countryCode = entry.getKey();
+//            Country country = entry.getValue();
+//
+//            // Assuming Country has a toString() method
+//            System.out.println("Country Code: " + countryCode + ", Country Details: " + country.toString());
+//        }
     }
     ///////////////////////////////////////////////////////////////////////////////
 
