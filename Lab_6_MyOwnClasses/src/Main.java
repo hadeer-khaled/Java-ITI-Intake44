@@ -9,15 +9,15 @@ import java.util.stream.Collectors;
 public class Main {
     public static void main(String[] args) {
 
-        City city1 = new City(1, "A", 2500000, "A");
+        City city1 = new City(1, "A", 2500000, "A"); // capital
         City city2 = new City(2, "B", 2000000, "B");
         City city3 = new City(3, "C", 970000, "C");
-        City city4 = new City(4, "D", 400000, "D");
+        City city4 = new City(4, "D", 400000, "D"); // capital
 
-        City city5 = new City(5, "E", 400000, "E");
+        City city5 = new City(5, "E", 400000, "E"); // capital
         City city6 = new City(6, "F", 350000, "F");
         City city7 = new City(7, "H", 200000, "H");
-        City city8 = new City(8, "I", 100000, "I");
+        City city8 = new City(8, "I", 100000, "I"); // capital
 
         Country country1 = new Country("CC1", "Country1", "Continent1",  55000000, 1, Arrays.asList(city1, city2));
 
@@ -68,6 +68,17 @@ public class Main {
         // -------  Question 3) Find the highest populated capital city -------\\
         System.out.println(" ");
         System.out.println(" ------------ The highest populated capital city ------------");
+        Optional<City> highestPopulatedCapital = countries.stream()
+                .filter(country -> country.getCapital() != 0) // Filter out countries with no capital
+                .map(country -> country.getCities().stream()
+                        .filter(city -> city.getId() == country.getCapital())) // Filter the capital city
+                .flatMap(cityStream -> cityStream)
+                .max(Comparator.comparingInt(City::getPopulation));
+
+        highestPopulatedCapital.ifPresent(city ->
+                System.out.println("Highest Populated Capital City: " + city.getName() +
+                        ", Population: " + city.getPopulation()));
+
     } // end of Main function
 
 } // end of Main Class

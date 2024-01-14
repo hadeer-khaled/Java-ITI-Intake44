@@ -16,20 +16,13 @@ public class City {
     public City() {
     }
 
-//    @Override
-//    public String toString() {
-//        return "City{" +
-//                "id=" + id +
-//                ", name='" + name + '\'' +
-//                ", population=" + population +
-//                ", countryCode='" + countryCode + '\'' +
-//                '}';
-//    }
     public String getName() {
         return name;
     }
     public int getPopulation() {
         return population;
     }
-
+    public int getId(){
+        return id;
+    }
 }// end of class

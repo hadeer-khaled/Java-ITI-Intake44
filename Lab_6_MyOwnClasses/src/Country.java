@@ -30,6 +30,9 @@ class Country {
     public String getName() {
         return name;
     }
+    public int getCapital() {
+        return capital;
+    }
 }
 //public class Country {
 //    private String code;
