@@ -42,6 +42,9 @@ public class Main {
                             ", Population: " + city.getPopulation()));
         });
 
+
+        //Optional helps handle the case where a country may not have any cities or if the city list is empty.
+
         // -------  Question 2) Find the most populated city of each continent -------\\
         System.out.println(" ");
         System.out.println(" ------------ The most populated city of each continent ------------");
@@ -69,9 +72,8 @@ public class Main {
         System.out.println(" ");
         System.out.println(" ------------ The highest populated capital city ------------");
         Optional<City> highestPopulatedCapital = countries.stream()
-                .filter(country -> country.getCapital() != 0) // Filter out countries with no capital
-                .map(country -> country.getCities().stream()
-                        .filter(city -> city.getId() == country.getCapital())) // Filter the capital city
+                .filter(country -> country.getCapital() != 0)
+                .map(country -> country.getCities().stream().filter(city -> city.getId() == country.getCapital()))
                 .flatMap(cityStream -> cityStream)
                 .max(Comparator.comparingInt(City::getPopulation));
 
